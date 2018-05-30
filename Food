@@ -1,0 +1,19 @@
+import greenfoot.*;
+/**
+ * Prints image of shnacky shnack
+ * 
+ * Stephanie Sanchez
+ * 5/30/18
+ */
+public class Food extends Actor
+{
+    /*
+     * Sets image of shnack (leaf) and adjusts size
+     */
+    public Food()
+    {
+        GreenfootImage image = getImage();
+        image.scale(image.getWidth() - 470, image.getHeight() - 430);
+        setImage(image);
+    }//End constructor Food
+}
