@@ -1,0 +1,61 @@
+import greenfoot.*;
+/**
+ * Keeps track of how many pieces of food the player has collected
+ * 
+ * Stephanie Sanchez
+ * 05/30/2018
+ */
+public class Score extends Actor
+{
+    GreenfootImage image = new GreenfootImage(100, 30);
+    private int score = 0;
+
+    public Score()
+    {
+        setText();
+        setImage(image);
+    }//End constructor Score
+
+    private void setText()
+    {
+        image.clear();
+        image.drawString("Score: " + score, ShiftSouth(1, 2), ShiftEast(15, 2));
+        image.setColor(greenfoot.Color.WHITE);
+        setImage(image);
+    }//End method setText
+    
+    /*
+     * Updates score each time a shnack is eaten
+     */
+    public void updateScore()
+    {
+        score++;
+        setText();
+        setImage(image);
+    }//End methos updateScore
+
+    public int ShiftSouth(int p, int distance) 
+    {
+        return (p + distance);
+    }
+
+    public int ShiftEast(int p, int distance) 
+    {
+        return (p + distance);
+    }
+    
+    /*
+     * Slows down snake after the player has collected 10 shnacks
+     */
+    public void setSpeed()
+    {
+        if(score>10)
+        {
+            Greenfoot.setSpeed(30);
+        }//End if statement
+        else
+        {
+            Greenfoot.setSpeed(43);
+        }//End else statement
+    }//End method setSpeed
+}
