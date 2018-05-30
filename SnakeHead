@@ -1,0 +1,99 @@
+import greenfoot.*;
+
+/**
+ * Class for the body of the snake - dictating direction of snake movement
+ * 
+ * Stephanie Sanchez
+ * 5/30/18
+ */
+public class SnakeHead  extends Snake
+{
+    private int bodyPos;
+    private Point snakeCoords;
+
+    /*
+     * Sets image of head as circle and adjusts size
+     */
+    public SnakeHead(int bodyPosition )
+    {
+        GreenfootImage image = getImage();
+        image.scale(image.getWidth() - 15, image.getHeight() - 15);
+        setImage(image);
+    }//End constructor SnakeHead
+
+    public void changeDirection()
+    {
+        SnakeWorld world = (SnakeWorld)getWorld();
+        snakeCoords = world.getBodyPosition(0);
+        setLocation(snakeCoords.getX(), snakeCoords.getY());
+    }//End method moveDirection
+
+    /*
+     * Used in method eatDaShnack as a reaction to the food being "eaten"
+     */
+    public void longerBoi()
+    {
+        SnakeWorld world = (SnakeWorld)getWorld();
+        world.addTail();
+        world.placeFood(1);
+    }//End method longerBoi
+    
+    /*
+     * Ensures that the Food object is there so that interaction between food and snake
+     * can take place and "shnack" can be eaten
+     */
+    public boolean canSee(Class clss)
+    {
+        Actor actor = getOneObjectAtOffset(0, 0, clss);
+        return actor != null;        
+    }//End method canSee
+    
+    /*
+     * Reaction to canSee method (after object is verified there)
+     * Used in eatDaShnack
+     */
+    public void eat(Class clss)
+    {
+        Actor actor = getOneObjectAtOffset(0, 0, clss);
+        if(actor != null)
+        {
+            getWorld().removeObject(actor);
+        }//End if statement
+    }//End method eat
+    
+    /*
+     * Integrates all of the components of game (interact w/ food, eat, and grow)
+     */
+    public void eatDaShnack()
+    {
+        if (canSee(Food.class))
+        {
+            eat(Food.class); 
+            longerBoi();
+        }//End if statement
+    }//End method eatDaShnack
+
+    /*
+     * Accounts for posibility of player crashing into themselves and results in death/
+     * end game
+     */
+    public void hitBody()
+    {
+        SnakeWorld world = (SnakeWorld)getWorld();
+        if(canSee(SnakeBody.class))
+        {
+            world.ded();
+        }//End if statement
+    }//End method hitBody
+    
+    /*
+     * Accounts for interactions head has, including changes in direction and 
+     * interaction with shnack (food)
+     */
+    public void act() 
+    {
+        changeDirection();
+        eatDaShnack();
+        hitBody();
+    }//End main method
+}
