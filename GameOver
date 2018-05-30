@@ -1,0 +1,17 @@
+import greenfoot.*;
+/**
+ * Prints Game Over screen
+ * 
+ * Stephanie Sanchez
+ * 5/30/18
+ */
+public class GameOver extends Actor
+{
+    public GameOver()
+    {
+        GreenfootImage image = new GreenfootImage(300, 100);
+        image.setColor(greenfoot.Color.WHITE);
+        image.drawString("Game Over", 125, 50);
+        setImage(image);
+    }//End contructor GameOver
+}//End class GameOver
