@@ -1,0 +1,17 @@
+import greenfoot.*;
+/**
+ * Parent class (Snake)
+ * 
+ * Stephanie Sanchez
+ * 5/30/18
+ */
+public class Snake extends Actor
+{
+    /*
+     * Sets initial speed of snake
+     */
+    public Snake()
+    {
+        Greenfoot.setSpeed(43);
+    }//End constructor Snake
+}
