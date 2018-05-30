@@ -1,0 +1,146 @@
+import greenfoot.*;
+
+/**
+ * Class the accepts user input (arrow keys) and increasing length of snake
+ * 
+ * @Stephanie Sanchez
+ * 5/30/18
+ */
+public class SnakeWorld extends World
+{
+    public static final int DOT_SIZE = 10;
+    public static final int MAX_DOTS = (600*400)/(DOT_SIZE*DOT_SIZE);
+    private int snakeSize=4;//Initial size of snake when initiated
+    private Point snakeCoords[] = new Point[MAX_DOTS];
+
+    private final int SPEED = 1;
+    private int directionX = SPEED;
+    private int directionY;
+    private Score score = new Score();
+
+    
+    public SnakeWorld()
+    {    
+        super(61, 41, 10);
+        setUpCoords();
+        drawSnake();
+        placeFood(1);
+        addObject(score, 6, 2);
+    }//End SnakeWorld constructor
+
+    /*
+     * Update location of snake
+     */
+    public void updateCoords()
+    {
+
+        for(int i = snakeSize - 1; i > 0;i--)
+        {
+
+            snakeCoords[i].setX(snakeCoords[i-1].getX());
+            snakeCoords[i].setY(snakeCoords[i-1].getY());
+
+        }//end for loop
+        
+        snakeCoords[0].setX(snakeCoords[0].getX() + directionX);
+        snakeCoords[0].setY(snakeCoords[0].getY() + directionY);
+    }//end method updateCoords
+
+    /*
+     * Initializes snake at start screen/restart
+     */
+    public void drawSnake()
+    {
+        addObject(new SnakeHead(0), snakeCoords[0].getX(), snakeCoords[0].getY());
+        for(int i = snakeSize - 1; i > 0; i--)
+        {
+            addObject(new SnakeBody(i), snakeCoords[i].getX(), snakeCoords[i].getY());
+        }
+    }//end method drawSnake
+
+    /*
+     * Creates new shnack (food) in a random location when other is "eaten"
+     * Number limit in place so it shows up on screen
+     */
+    public void placeFood(int amountOfFood)
+    {
+        for (int i = 0; i < amountOfFood; i++)
+        {
+            addObject(new Food(), Greenfoot.getRandomNumber(59)+1,  Greenfoot.getRandomNumber(39)+1);
+        }//End for loop
+    }//End method placeFood
+
+    /*
+     * Determines the initial coordinates where the snake is initialized
+     */
+    public void setUpCoords()
+    {
+        snakeCoords[0] = new Point(getWidth() / 2, getHeight() / 2);
+        for(int i = 1; i < snakeSize; i++)
+        {
+            snakeCoords[i]=new Point(snakeCoords[i-1].getX() - 1, snakeCoords[i-1].getY());
+        }//end for loop
+    }//End method setUpCoords
+
+    /*
+     * Increases the length of the tail with every shnack eaten
+     */
+    public void addTail()
+    {
+        snakeCoords[snakeSize] = new Point(snakeCoords[snakeSize-1].getX(), snakeCoords[snakeSize-1].getY());
+        addObject(new SnakeBody(snakeSize), snakeCoords[snakeSize].getX(), snakeCoords[snakeSize].getY());
+        snakeSize++;
+        score.updateScore();
+    }//End method addTail
+
+    /*
+     * Takes user input for direction of snake movement
+     */
+    public void move()
+    {
+        if( Greenfoot.isKeyDown("up") && directionY != SPEED)
+        {
+            directionY = -SPEED; 
+            directionX = 0;
+        }//End up if statement
+        if( Greenfoot.isKeyDown("down") && directionY != -SPEED)
+        {
+            directionY = SPEED;
+            directionX = 0;
+        }//End down if statement
+        if( Greenfoot.isKeyDown("left") && directionX != SPEED)
+        {
+            directionX = -SPEED;
+            directionY = 0;
+        }//End left if statement
+        if( Greenfoot.isKeyDown("right") && directionX != -SPEED)
+        {
+            directionX = SPEED;
+            directionY = 0;
+        }//End right if statement
+    }//End method move
+
+    /*
+     * Returns the coordinates where the snake is located (used for method updateCoords)
+     */
+    public Point getBodyPosition(int bodyPosition)
+    {
+        return snakeCoords[bodyPosition];
+    }//End method getBodyPosition
+
+    /*
+     * Determines end of game (player has lost)
+     */
+    public void ded()
+    {
+        addObject(new GameOver(), getWidth() / 2, getHeight() / 2);
+        Greenfoot.stop();
+    }//End method ded
+
+    public void act()
+    {
+        move();
+        updateCoords();
+    }//End method act
+
+}
